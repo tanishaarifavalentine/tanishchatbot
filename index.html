@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aarifa AI ❤️</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #08080f;
+    color: white;
+    min-height: 100vh;
+}
+
+.header {
+    background: linear-gradient(135deg, #151522, #21101b);
+    padding: 22px 15px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+    box-shadow: 0 5px 25px rgba(255, 60, 120, 0.15);
+}
+
+.robot {
+    font-size: 45px;
+    margin-bottom: 5px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 27px;
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    margin-top: 7px;
+    color: #aaa;
+    font-size: 13px;
+}
+
+.status {
+    margin-top: 10px;
+    color: #65ff9b;
+    font-size: 12px;
+}
+
+.chat {
+    height: calc(100vh - 190px);
+    overflow-y: auto;
+    padding: 20px 15px 100px;
+    scroll-behavior: smooth;
+}
+
+.message {
+    padding: 13px 16px;
+    margin: 12px 0;
+    border-radius: 18px;
+    max-width: 86%;
+    line-height: 1.55;
+    font-size: 15px;
+    word-wrap: break-word;
+}
+
+.ai {
+    background: #191923;
+    border: 1px solid #292936;
+    border-bottom-left-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.user {
+    background: linear-gradient(135deg, #ff4f81, #ff6b9a);
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+    box-shadow: 0 5px 15px rgba(255,79,129,0.15);
+}
+
+.typing {
+    display: inline-block;
+    color: #aaa;
+    font-style: italic;
+}
+
+.typing span {
+    animation: blink 1.4s infinite;
+}
+
+.typing span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0%, 60%, 100% {
+        opacity: 0.2;
+    }
+    30% {
+        opacity: 1;
+    }
+}
+
+.input-area {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(15,15,23,0.97);
+    backdrop-filter: blur(10px);
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid #292936;
+}
+
+input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px 16px;
+    border-radius: 25px;
+    border: 1px solid #33333f;
+    outline: none;
+    background: #20202b;
+    color: white;
+    font-size: 14px;
+}
+
+input::placeholder {
+    color: #888;
+}
+
+input:focus {
+    border-color: #ff4f81;
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #ff4f81, #ff6b9a);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.welcome-heart {
+    color: #ff5b8a;
+}
+
+.secret {
+    color: #ffd166;
+    font-weight: bold;
+}
+
+@media (max-width: 500px) {
+    .header h1 {
+        font-size: 23px;
+    }
+
+    .message {
+        max-width: 90%;
+        font-size: 14px;
+    }
+
+    button {
+        padding: 12px 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <div class="robot">🤖</div>
+
+    <h1>AARIFA AI ❤️</h1>
+
+    <div class="subtitle">
+        Relationship Intelligence — Tanish Edition
+    </div>
+
+    <div class="status">
+        ● ONLINE • Tanish's Relationship Database Connected
+    </div>
+
+</div>
+
+
+<div class="chat" id="chat">
+
+    <div class="message ai">
+
+        Hey Aarifa 👋❤️
+        <br><br>
+
+        I'm <b>Aarifa AI</b> 🤖
+        <br><br>
+
+        I've been specially customized by <b>Tanish</b> for you.
+        <br><br>
+
+        Ask me anything about Tanish, your relationship, or what he thinks about you. 😌
+        <br><br>
+
+        <span class="welcome-heart">
+            P.S. — Some answers may expose how pagal Tanish actually is for you. 😵‍💫❤️
+        </span>
+
+    </div>
+
+</div>
+
+
+<div class="input-area">
+
+    <input
+        id="input"
+        type="text"
+        placeholder="Ask Aarifa AI something..."
+        autocomplete="off"
+    >
+
+    <button onclick="sendMessage()">Send</button>
+
+</div>
+
+
+<script>
+
+function addMessage(text, type) {
+
+    const chat = document.getElementById("chat");
+
+    const message = document.createElement("div");
+
+    message.className = "message " + type;
+
+    message.innerHTML = text;
+
+    chat.appendChild(message);
+
+    chat.scrollTop = chat.scrollHeight;
+
+}
+
+
+function showTyping() {
+
+    const chat = document.getElementById("chat");
+
+    const typing = document.createElement("div");
+
+    typing.className = "message ai";
+
+    typing.id = "typing";
+
+    typing.innerHTML = `
+        <span class="typing">
+            Analysing Tanish's memories
+            <span>.</span><span>.</span><span>.</span>
+        </span>
+    `;
+
+    chat.appendChild(typing);
+
+    chat.scrollTop = chat.scrollHeight;
+}
+
+
+function removeTyping() {
+
+    const typing = document.getElementById("typing");
+
+    if (typing) {
+        typing.remove();
+    }
+
+}
+
+
+function getAnswer(question) {
+
+    question = question.toLowerCase();
+
+    let answer = `
+        Hmm... 🤔
+        <br><br>
+        I don't have an answer for that yet.
+        <br><br>
+        Try asking me something about <b>Tanish ❤️</b>
+        `;
+
+
+    /* QUESTION 1 */
+
+    if (
+        question.includes("why tanish loves me") ||
+        question.includes("why does tanish love me") ||
+        question.includes("why tanish love me") ||
+        question.includes("why he loves me") ||
+        question.includes("why does he love me")
+    ) {
+
+        answer = `
+        Because love is love love bs ho jata h no...
+        <br><br>
+        also you are queen that why 👸
+        `;
+
+    }
+
+
+    /* QUESTION 2 */
+
+    else if (
+        question.includes("really want to say sorry") ||
+        question.includes("really wants to say sorry") ||
+        question.includes("does he want to say sorry") ||
+        question.includes("tanish sorry") ||
+        question.includes("is tanish sorry")
+    ) {
+
+        answer = `
+        Yes he wants to islye tanish ne yeh customized ai chat bot banaya sach bolu toh you are so lucky aise partner effort krne wale sbko nhi milta
+        `;
+
+    }
+
+
+    /* QUESTION 3 */
+
+    else if (
+        question.includes("changed hua") ||
+        question.includes("changed") ||
+        question.includes("change hua") ||
+        question.includes("has tanish changed") ||
+        question.includes("tanish changed")
+    ) {
+
+        answer = `
+        Haa bilkul tanish changed hua hai tumne ek baat notice ki hogi Jyda tar baat woh Ignore krta h tkki jhadga naa ho , kya tumne nhi kiya notice ?
+        `;
+
+    }
+
+
+    /* QUESTION 4 */
+
+    else if (
+        question.includes("kya woh pagal hai") ||
+        question.includes("kya tanish pagal hai") ||
+        question.includes("is tanish pagal") ||
+        question.includes("is he pagal") ||
+        question.includes("is he crazy")
+    ) {
+
+        answer = `
+        Haa!!! Aksar log pyaar meh pagal ho jate h 😵‍💫
+        <br><br>
+        bahot taarif krta hai woh tumhari chat gpt se
+        `;
+
+    }
+
+
+    /* QUESTION 5 */
+
+    else if (
+        question.includes("what does tanish like about you") ||
+        question.includes("what does tanish like about me") ||
+        question.includes("tanish likes about me") ||
+        question.includes("tanish ko kya pasand hai")
+    ) {
+
+        answer = `
+        He loves every moments with you actually you Means aarifa pura tumko hi psnd karta h woh , so cute 🤗
+        `;
+
+    }
+
+
+    /* QUESTION 6 */
+
+    else if (
+        question.includes("what does tanish find cute") ||
+        question.includes("what does tanish finds cute") ||
+        question.includes("tanish find cute") ||
+        question.includes("tanish ko cute kya lagta hai")
+    ) {
+
+        answer = `
+        He actually Loves your childish behavior awww so caring boyfriend 💟
+        `;
+
+    }
+
+
+    /* QUESTION 7 */
+
+    else if (
+        question.includes("future") ||
+        question.includes("present") ||
+        question.includes("future present") ||
+        question.includes("future main kya") ||
+        question.includes("present main kya")
+    ) {
+
+        answer = `
+        Mene same yehi question pucha tha tumhare tanish se usne bola tha ki bss present mai dil khol ke pyaar aur future mai saari hhadye Paar ke pyaar krna h 🤭
+        `;
+
+    }
+
+
+    /* QUESTION 8 */
+
+    else if (
+        question.includes("sabse jyda kya pasand") ||
+        question.includes("sabse zyada kya pasand") ||
+        question.includes("tanish ko sabse jyda") ||
+        question.includes("tanish ko sabse zyada") ||
+        question.includes("what does tanish like most")
+    ) {
+
+        answer = `
+        Tumhare presence 😚 aur physically apke ass aur boobs 👄🙈
+        <br><br>
+        Kitna nathkat hai woh 😘
+        `;
+
+    }
+
+
+    /* QUESTION 9 */
+
+    else if (
+        question.includes("i love you") ||
+        question.includes("love you") ||
+        question.includes("does tanish love me") ||
+        question.includes("tanish loves me")
+    ) {
+
+        answer = `
+        Haa Haa I love you💟
+        <br><br>
+        मैं तुमसे प्यार करता हूँ 👩‍❤️‍👨
+        <br>
+        माझं तुझ्यावर प्रेम आहे 😘
+        <br>
+        Je t’aime💗
+        <br>
+        Te amo🥰
+        <br>
+        Ti amo🤭
+        <br>
+        Ich liebe dich💟
+        <br>
+        Eu te amo😋
+        <br>
+        Я тебя люблю — Ya tebya lyublyu❣️
+        <br>
+        愛してる — Aishiteru👫
+        <br>
+        사랑해 — Saranghae👩‍❤️‍👨
+        <br>
+        我爱你 — Wǒ ài nǐ😍
+        <br>
+        Seni seviyorum👄
+        <br>
+        أحبك — Uhibbuka/Uhibbuki
+        <br>
+        Σε αγαπώ — Se agapó🤗
+        <br>
+        Ik hou van jou🤭
+        <br>
+        Jag älskar dig💘
+        <br>
+        Kocham cię🤍
+        <br>
+        Aku cinta kamu💫
+        <br>
+        ฉันรักคุณ — Chan rak khun ❤️
+        <br><br>
+        Don't worry yeh 20 language m I love you bola gya h Tanish yeh insert kiya h awwww so cute partner 😝
+        `;
+
+    }
+
+
+    return answer;
+
+}
+
+
+function sendMessage() {
+
+    const input = document.getElementById("input");
+
+    const question = input.value.trim();
+
+    if (question === "") {
+        return;
+    }
+
+
+    /* Show user's message */
+
+    addMessage(question, "user");
+
+    input.value = "";
+
+    input.focus();
+
+
+    /* Show AI typing */
+
+    showTyping();
+
+
+    /* Generate answer after delay */
+
+    setTimeout(function() {
+
+        removeTyping();
+
+        const answer = getAnswer(question);
+
+        addMessage(answer, "ai");
+
+    }, 1200);
+
+}
+
+
+/* Press Enter to send */
+
+document.getElementById("input").addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+
+        sendMessage();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
